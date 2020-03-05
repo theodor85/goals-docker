@@ -1,12 +1,30 @@
 "use strict";
 
-initDB();
-
 // при старте показываем Цели
 turnOnGoals();
 turnOffActions();
 
 // получаем цели из БД
+
+async function getGoals() {
+    let response = await fetch('http://flask:8000/goals', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+        }
+    });
+
+    if (response.ok) { // если HTTP-статус в диапазоне 200-299
+    // получаем тело ответа (см. про этот метод ниже)
+        let json = await response.json();
+        } else {
+            alert("Ошибка HTTP: " + response.status);
+        return json;
+    }
+    
+}
+
 let goals = getGoals();
 console.log(goals);
 
