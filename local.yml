@@ -1,0 +1,39 @@
+version: '3'
+
+volumes:
+    local_postgres_data: {}
+    local_postgres_data_backups: {}
+
+services:
+    flask:
+        build:
+            context: .
+            dockerfile: ./compose/local/flask/Dockerfile
+        depends_on:
+            - postgres
+        volumes:
+            - ./backend:/app
+        env_file:
+            - ./.envs/.local/.flask
+            - ./.envs/.local/.postgres
+        command: /start
+        ports:
+            - "8000:8000"
+
+    postgres:
+        image: postgres:latest
+        volumes:
+            - local_postgres_data:/var/lib/postgresql/data
+            - local_postgres_data_backups:/backups
+        env_file:
+            - ./.envs/.local/.postgres
+
+    nginx:
+        build:
+            context: .
+            dockerfile: ./compose/local/nginx/Dockerfile
+        volumes:
+            - ./frontend:/usr/share/nginx/html
+        depends_on:
+            - flask
+        network_mode: "host"
