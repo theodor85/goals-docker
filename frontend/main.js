@@ -7,19 +7,21 @@ turnOffActions();
 // получаем цели из БД
 
 fetch('http://localhost:5000/goals')
-.then(function(response) {
-    let goals = response.json();
-    console.log(goals);
-    
-    // отображем цели
-    for (let i = 0; i < goals.length; i++) {
-        const goal = goals[i];
-        displayGoalDiv(goal.name, goal.target, goal.current);
-    }
-})
-.catch(function(error) {
-  console.log('Looks like there was a problem: \n', error);
-});
+    .then( response => response.json() )
+    .then(
+        function(json) {
+            console.log("JSON has been received");
+            console.log(json);
+            
+            for (let i = 0; i < json.length; i++) {
+                const goal = json[i];
+                displayGoalDiv(goal.name, goal.target, 0);
+            }
+        }
+    )
+    .catch(function(error) {
+        console.log('Looks like there was a problem: \n', error);
+    });
 
 
 // обработчик выбора меню Цели
