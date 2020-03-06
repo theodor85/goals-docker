@@ -18,7 +18,7 @@ services:
             - ./.envs/.local/.postgres
         command: /start
         ports:
-            - "8000:8000"
+            - "5000:5000"
 
     postgres:
         image: postgres:latest
@@ -36,4 +36,5 @@ services:
             - ./frontend:/usr/share/nginx/html
         depends_on:
             - flask
-        network_mode: "host"
+        ports:
+            - "8000:80"

@@ -6,33 +6,20 @@ turnOffActions();
 
 // получаем цели из БД
 
-async function getGoals() {
-    let response = await fetch('http://flask:8000/goals', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          'Access-Control-Allow-Origin': '*',
-        }
-    });
-
-    if (response.ok) { // если HTTP-статус в диапазоне 200-299
-    // получаем тело ответа (см. про этот метод ниже)
-        let json = await response.json();
-        } else {
-            alert("Ошибка HTTP: " + response.status);
-        return json;
-    }
+fetch('http://localhost:5000/goals')
+.then(function(response) {
+    let goals = response.json();
+    console.log(goals);
     
-}
-
-let goals = getGoals();
-console.log(goals);
-
-// отображем цели
-for (let i = 0; i < goals.length; i++) {
-    const goal = goals[i];
-    displayGoalDiv(goal.name, goal.target, goal.current);
-}
+    // отображем цели
+    for (let i = 0; i < goals.length; i++) {
+        const goal = goals[i];
+        displayGoalDiv(goal.name, goal.target, goal.current);
+    }
+})
+.catch(function(error) {
+  console.log('Looks like there was a problem: \n', error);
+});
 
 
 // обработчик выбора меню Цели
