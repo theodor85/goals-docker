@@ -5,14 +5,11 @@ turnOnGoals();
 turnOffActions();
 
 // получаем цели из БД
-
 fetch('http://localhost:5000/goals')
     .then( response => response.json() )
     .then(
         function(json) {
-            console.log("JSON has been received");
-            console.log(json);
-            
+            // отрисовываем полученные цели
             for (let i = 0; i < json.length; i++) {
                 const goal = json[i];
                 displayGoalDiv(goal.name, goal.target, 0);
