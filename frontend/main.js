@@ -67,7 +67,7 @@ function onAddGoal(){
     displayGoalDiv(divGoalName.value, goalNumericArgument.value, 0);
 
     // сохранение в БД
-    addNewGoal(divGoalName.value, goalNumericArgument.value);
+    saveNewGoal(divGoalName.value, goalNumericArgument.value);
 
     // очищаем поля ввода
     divGoalName.value = "";
@@ -76,18 +76,38 @@ function onAddGoal(){
 
 function displayGoalDiv(goalName, goalTarget, goalCurrent) {
     // отображаем div с новой целью
-    /* добавляем вот такой div:
-    <div>
-        <p style="margin-top: 20px; margin-bottom: 0;">Название цели - 25% (25/100)</p>
+   let divGoals = document.getElementById("goals");    
+   let div = document.createElement('div');
+   div.innerHTML = `
+   <div>
+        <p style="margin-top: 20px; margin-bottom: 0;">${goalName} - 25% (25/${goalTarget})</p>
         <div class="progress" style="margin-top: 0;">
             <div class="progress-bar" role="progressbar" style="width: 45%;" aria-valuenow="25" 
                 aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </div>
-    */
-   let divGoals = document.getElementById("goals");    
-   let div = document.createElement('div');
-   div.innerHTML = '<div><p style="margin-top: 20px; margin-bottom: 0;">' + goalName + ' - 0% (0/' + goalTarget + ')</p><div class="progress" style="margin-top: 0;"><div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div></div></div>';
-
+   `
    divGoals.appendChild(div);
+}
+
+function saveNewGoal(goalName, target) {
+    fetch(
+        'http://localhost:5000/goals',
+        {
+            method: 'POST',
+            body: {
+                name: goalName,
+                target: target,
+            },
+        },
+    )
+    .then( response => response.json() )
+    .then(
+        function(json) {
+            alert(json.message);
+        }
+    )
+    .catch(function(error) {
+        console.log('Looks like there was a problem: \n', error);
+    }); 
 }
