@@ -95,10 +95,10 @@ function saveNewGoal(goalName, target) {
         'http://localhost:5000/goals',
         {
             method: 'POST',
-            body: {
+            body: JSON.stringify({
                 name: goalName,
                 target: target,
-            },
+            }),
         },
     )
     .then( response => response.json() )

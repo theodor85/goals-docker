@@ -33,6 +33,8 @@ class Goals(Resource):
         except Exception as e:
             return f"Error while parsing request: {e}", 400
 
+        logger.warning(f'*********** {params}')
+        logger.warning(f'*********** {params["name"]}, {params["name"]}')
         new_goal = GoalModel(name=params["name"], target=params["target"], current=0)
         try:
             db.session.add(new_goal)
